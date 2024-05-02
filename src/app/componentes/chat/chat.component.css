@@ -1,0 +1,102 @@
+
+.chat-container {
+    background-color: #ffffff;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 120px); /* Altura máxima del contenedor */
+}
+
+.chat-box {
+    background-color: #ffffff;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 20px;
+    overflow-y: auto;
+    flex: 1; /* La caja de chat ocupa el espacio restante */
+}
+
+.chat-box .message {
+    margin-bottom: 20px; /* Ajusta el espacio entre los cuadros de mensaje */
+}
+
+.message {
+    margin-bottom: 10px;
+    padding: 8px 12px;
+    border-radius: 15px;
+    font-family: 'Roboto', sans-serif; 
+    display: flex;
+    align-items: center;
+    
+}
+.message .material-icons {
+    font-size: 35px; /* Tamaño de los iconos */
+    margin-right: 15px; /* Ajusta el margen entre el icono y el texto */
+    border-radius: 50%; /* Redondea el icono en un círculo */
+    background-color: #ffffff;
+    padding: 5px; /* Espacio dentro del círculo */
+    border: 2px solid #2c2c2c;
+    color: rgb(65, 63, 63);
+}
+
+.received {
+    align-self: flex-start;
+    font-family: 'Roboto', sans-serif;
+}
+
+.sent {
+    align-self: flex-end;
+    font-family: 'Roboto', sans-serif;
+}
+
+.input-box {
+    position: fixed;
+    bottom: 20px; /* Ajusta la distancia desde la parte inferior */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    max-width: 900px;
+    background-color: #ffffff;
+    padding: 10px;
+    box-shadow: 0px -1px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 20px;
+    display: flex;
+    align-items: center;  
+}
+
+.input-box:focus {
+    outline: black;
+}
+
+.input-box input {
+    font-size: 17px;
+    outline: none;
+    border: hidden;
+    padding: 10px;
+    border-radius: 10px;
+    width: calc(100% - 50px); /* Reduce 50px del total para dejar espacio para el botón */
+}
+
+.input-box button {
+    font-size: 16px;
+    padding: 8px 15px;
+    background-color: #ffffff;
+    color: rgb(109, 109, 109);
+    cursor: pointer;
+    border: none;
+}
+
+.input-box button:hover {
+    background-color: #cfcfcf73;
+}
+
+.rounded-circle {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
