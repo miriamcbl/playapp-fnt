@@ -17,7 +17,7 @@ pipeline {
         //ACCUWEATHER_API_KEY = credentials('accuweather-api-key')        
     }
     tools {
-        NODEJS_VERSION = '14'
+         nodejs 'nodejs'
     }
 
     stages {
