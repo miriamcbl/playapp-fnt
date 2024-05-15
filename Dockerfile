@@ -1,5 +1,7 @@
 FROM node:latest as build
 
+RUN yum install -y unzip
+
 ARG APP_FILE
 
 WORKDIR /
