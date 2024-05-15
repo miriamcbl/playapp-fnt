@@ -50,7 +50,7 @@ pipeline {
                     // Agregar los archivos al área de preparación
                     sh "git add package.json"
                     // Realizar commit
-                    sh "git commit -am 'Jenkins: actualización de la versión a ${version}'"
+                    sh "git commit -am 'Jenkins: actualización a la versión ${version}'"
                     // Configurar la rama ascendente antes de realizar el push
                     withCredentials([string(credentialsId: 'personal-access-token-github', variable: 'TOKEN')]) {
                         def gitPushCommand = "git push --set-upstream https://$TOKEN@github.com/miriamcbl/playapp-fnt.git main"
