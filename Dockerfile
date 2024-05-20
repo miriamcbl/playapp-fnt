@@ -1,6 +1,6 @@
 FROM node:latest as build
 
-RUN yum install -y unzip
+RUN apt-get update && apt-get install -y unzip
 
 ARG APP_FILE
 
