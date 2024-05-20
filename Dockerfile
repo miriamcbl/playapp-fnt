@@ -14,8 +14,6 @@ WORKDIR /app
 
 RUN npm install
 
-COPY ${ALL_CODE} .
-
 RUN npm run build
 
 EXPOSE 4200
