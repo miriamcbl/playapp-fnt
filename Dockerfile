@@ -8,7 +8,7 @@ WORKDIR /
 
 COPY ${APP_FILE} app.zip
 
-RUN unzip app.zip /app
+RUN unzip app.zip -d /app
 
 WORKDIR /app
 
