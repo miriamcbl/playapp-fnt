@@ -12,7 +12,7 @@ RUN unzip app.zip -d /app
 
 WORKDIR /app
 
-RUN npm install
+RUN npm ci
 
 RUN npm run build
 
