@@ -7,11 +7,11 @@ pipeline {
     }    
     environment{
     	  // Declaracion de variables de entorno
-        SONAR_TOKEN = credentials('sonarcloud-token')
-        //DOCKER_HUB_USERNAME = credentials('docker-hub-username')
-        //DOCKER_HUB_PASSWORD = credentials('docker-hub-token')
-        //DOCKER_HUB_REPOSITORY = 'playapp_back'
-        //DOCKER_IMAGE_TAG = 'latest'
+        //SONAR_TOKEN = credentials('sonarcloud-token')
+        DOCKER_HUB_USERNAME = credentials('docker-hub-username')
+        DOCKER_HUB_PASSWORD = credentials('docker-hub-token')
+        DOCKER_HUB_REPOSITORY = 'playapp_fnt'
+        DOCKER_IMAGE_TAG = 'latest'
         //PLAYAPP_EC2 = credentials('playapp_ec2')
         //OPENAI_API_KEY = credentials('openai-api-key')
         //ACCUWEATHER_API_KEY = credentials('accuweather-api-key')        
@@ -35,41 +35,30 @@ pipeline {
                     sh 'npm install'
                 }
             }
-        }
-		stage('Publish Version') {
+        }		
+        stage('Build Docker Image') {
             steps {
-                script {                
-                    echo 'Publishing new version and creating and pushing tag in GitHub'
-		    		//sh "git fetch"
-                    //sh "git tag -d \$(git tag -l)"
-                    def version = params.VERSION
+                script {
+                    echo 'Building and pushing docker image - Playapp'
+
+                    def directoryPath = '/var/lib/jenkins/workspace/playapp-fnt-pipeline'
+                    def zipFileName = 'app.zip'                    
                     
-                    def packageJson = readFile "${WORKSPACE}/package.json"
-                    def updatedPackageJson = packageJson.replaceAll(/"version": ".+"/, "\"version\": \" ${version}\"")
-                    writeFile file: 'package.json', text: updatedPackageJson
-                    // Agregar los archivos al área de preparación
-                    sh "git add package.json"
-                    // Realizar commit
-                    sh "git commit -am 'Jenkins: actualización a la versión ${version}'"
-                    // Configurar la rama ascendente antes de realizar el push
-                    withCredentials([string(credentialsId: 'personal-access-token-github', variable: 'TOKEN')]) {
-                        def gitPushCommand = "git push --set-upstream https://$TOKEN@github.com/miriamcbl/playapp-fnt.git main"
-                        def pushResult = sh(script: gitPushCommand, returnStatus: true)
-                        if (pushResult == 0) {
-                            echo "Push successful"
-                        } else {
-                            error "Failed to push changes"
-                        }
-                    }
-                    // Crear tag con la versión
-                    sh "git tag -a ${version} -m 'Versión ${version}'"
-                    def gitPushCommand = 'git push --tags'
-                    def pushResult = sh(script: gitPushCommand, returnStatus: true)
-                    if (pushResult == 0) {
-                            echo "Push successful"
-                    } else {
-                            error "Failed to push changes"
-                    }
+                    sh """
+                        if [ -f ${zipFileName} ]; then
+                            echo "app.zip existe dentro del workspace"
+                            rm ${zipFileName}
+                            echo "Se ha eliminado app.zip"
+                        fi
+                    """
+                    sh "cd ${directoryPath} && zip -r ${env.WORKSPACE}/${zipFileName} ."
+
+                    sh 'ls -l'
+
+                    sh "docker build  --build-arg APP_FILE=app.zip -t ${DOCKER_HUB_USERNAME}/${DOCKER_HUB_REPOSITORY}:${DOCKER_IMAGE_TAG} ."
+                    //sh "docker tag ${DOCKER_HUB_USERNAME}/${DOCKER_HUB_REPOSITORY}:${DOCKER_IMAGE_TAG} ${DOCKER_HUB_USERNAME}/${DOCKER_HUB_REPOSITORY}:${DOCKER_IMAGE_TAG}"
+                    sh "docker login -u ${DOCKER_HUB_USERNAME} -p ${DOCKER_HUB_PASSWORD}"
+                    sh "docker push ${DOCKER_HUB_USERNAME}/${DOCKER_HUB_REPOSITORY}:${DOCKER_IMAGE_TAG}"
                 }
             }
         }
