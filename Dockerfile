@@ -16,4 +16,10 @@ RUN npm ci
 
 RUN npm run build
 
-CMD ["npm", "start"]
+FROM nginx:latest
+
+COPY --from=build /app/dist/playapp-fnt /usr/share/nginx/html
+
+EXPOSE 8080
+
+CMD ["nginx", "-g", "daemon off;"]
