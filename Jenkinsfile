@@ -41,7 +41,7 @@ pipeline {
 					sh "chmod g+w ${propertiesDir}"
 		            // Se lee el properties
 		            def propertiesFile = readFile(propertiesDir)
-                    def hostserver = "ng serve --host ${PLAYAPP_EC2_FNT}"
+                    def hostserver = "ng serve --host ${PLAYAPP_EC2_FNT} --port 8080"
                     echo hostserver
 		            // Se actualiza con las secrets 
 		            propertiesFile = propertiesFile.replaceAll('ng serve', hostserver)		
