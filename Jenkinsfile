@@ -12,7 +12,7 @@ pipeline {
         DOCKER_HUB_PASSWORD = credentials('docker-hub-token')
         DOCKER_HUB_REPOSITORY = 'playapp_fnt'
         DOCKER_IMAGE_TAG = 'latest'
-        //PLAYAPP_EC2 = credentials('playapp_ec2')
+        PLAYAPP_EC2_FNT = credentials('playapp_ec2_fnt')
         //OPENAI_API_KEY = credentials('openai-api-key')
         //ACCUWEATHER_API_KEY = credentials('accuweather-api-key')        
     }
