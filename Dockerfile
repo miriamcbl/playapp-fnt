@@ -9,9 +9,7 @@ WORKDIR /
 
 COPY ${APP_FILE} app.zip
 
-RUN mkdir -p /app && unzip app.zip -d /app
-
-WORKDIR /app
+RUN mkdir -p /app && unzip app.zip -d /app/
 
 RUN npm ci
 
