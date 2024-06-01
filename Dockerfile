@@ -2,9 +2,7 @@ FROM node:latest as build
 
 RUN apt-get update && apt-get install -y unzip
 
-RUN apt-get install procps
-
-RUN apt-get install iputils
+RUN apt-get install coreutils
 
 ARG APP_FILE
 
