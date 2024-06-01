@@ -20,9 +20,12 @@ RUN npm ci
 RUN npm run build
 
 RUN ls -la /app
+RUN pwd
 
 # Deploying the app
 FROM nginx:latest
+
+RUN ls -la /app/dist
 
 COPY --from=build /app/dist/playapp-fnt /usr/share/nginx/html
 
