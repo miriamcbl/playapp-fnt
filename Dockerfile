@@ -25,10 +25,6 @@ RUN pwd
 # Deploying the app
 FROM nginx:latest
 
-RUN ls -la /
-
-RUN chmod -R 777 /app/dist
-
 COPY --from=build /app/dist/playapp-fnt /usr/share/nginx/html
 
 RUN ls -la /usr/share/nginx/html
