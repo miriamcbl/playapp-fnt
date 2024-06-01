@@ -26,8 +26,10 @@ RUN pwd
 FROM nginx:latest
 
 RUN ls -la /
+RUN chmod 777 -R /app/dist
+RUN ls -la /app/dist
 
-COPY --from=build dist/playapp-fnt /usr/share/nginx/html
+COPY --from=build /app/dist/playapp-fnt /usr/share/nginx/html
 
 RUN ls -la /usr/share/nginx/html
 
