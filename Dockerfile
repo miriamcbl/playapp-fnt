@@ -27,8 +27,6 @@ FROM nginx:latest
 
 RUN ls -la /
 
-RUN ls -la /dist
-
 COPY --from=build dist/playapp-fnt /usr/share/nginx/html
 
 RUN ls -la /usr/share/nginx/html
