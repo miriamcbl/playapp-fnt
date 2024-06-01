@@ -2,6 +2,10 @@ FROM node:latest as build
 
 RUN apt-get update && apt-get install -y unzip
 
+RUN apt-get install procps
+
+RUN apt-get install iputils
+
 ARG APP_FILE
 
 WORKDIR /
@@ -17,9 +21,6 @@ RUN npm ci
 RUN npm run build
 
 FROM nginx:latest
-
-RUN yum install -y iputils
-RUN yum install -y procps
 
 COPY --from=build /app/dist/playapp-fnt /usr/share/nginx/html
 
