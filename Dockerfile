@@ -1,3 +1,4 @@
+# Building the app
 FROM node:latest as build
 
 RUN apt-get update && apt-get install -y unzip
@@ -8,7 +9,7 @@ WORKDIR /
 
 COPY ${APP_FILE} app.zip
 
-RUN unzip app.zip -d /app
+RUN mkdir -p /app && unzip app.zip -d /app
 
 WORKDIR /app
 
@@ -16,7 +17,11 @@ RUN npm ci
 
 RUN npm run build
 
+# Deploying the app
 FROM nginx:latest
+
+RUN ls /app
+RUN ls /app/dist
 
 COPY --from=build /app/dist/playapp-fnt /usr/share/nginx/html
 
