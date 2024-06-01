@@ -19,7 +19,8 @@ RUN npm ci
 
 RUN npm run build
 
-RUN ls -la /app
+RUN ls -la /app/dist
+RUN ls -la /app/dist/playapp-fnt
 RUN pwd
 
 # Deploying the app
