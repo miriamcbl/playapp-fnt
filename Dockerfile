@@ -25,7 +25,11 @@ RUN pwd
 # Deploying the app
 FROM nginx:latest
 
-COPY --from=build /app/dist/playapp-fnt /usr/share/nginx/html
+RUN ls -la /
+
+RUN ls -la /dist
+
+COPY --from=build dist/playapp-fnt /usr/share/nginx/html
 
 RUN ls -la /usr/share/nginx/html
 
