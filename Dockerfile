@@ -5,11 +5,11 @@ RUN apt-get update && apt-get install -y unzip
 
 ARG APP_FILE
 
-WORKDIR /
+WORKDIR /app
 
 COPY ${APP_FILE} app.zip
 
-RUN mkdir -p /app && unzip app.zip -d /app/
+RUN unzip app.zip -d /app/
 
 RUN npm ci
 
