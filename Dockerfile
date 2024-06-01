@@ -13,9 +13,13 @@ RUN mkdir -p /app && unzip app.zip -d /app
 
 RUN ls -la /app
 
+WORKDIR /app
+
 RUN npm ci
 
 RUN npm run build
+
+RUN ls -la /app
 
 # Deploying the app
 FROM nginx:latest
