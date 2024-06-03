@@ -47,7 +47,44 @@ pipeline {
 		            writeFile file: propertiesDir, text: propertiesFile
         		}
         	}
-        }        		
+        }
+        stage('Publish Version') {
+            steps {
+                script {                
+                    echo 'Publishing new version and creating and pushing tag in GitHub'
+		    		//sh "git fetch"
+                    //sh "git tag -d \$(git tag -l)"
+                    def version = params.VERSION
+                    
+                    def packageJson = readFile "${WORKSPACE}/package.json"
+                    def updatedPackageJson = packageJson.replaceAll(/"version": ".+"/, "\"version\": \" ${version}\"")
+                    writeFile file: 'package.json', text: updatedPackageJson
+                    // Agregar los archivos al área de preparación
+                    sh "git add package.json"
+                    // Realizar commit
+                    sh "git commit -am 'Jenkins: actualización a la versión ${version}'"
+                    // Configurar la rama ascendente antes de realizar el push
+                    withCredentials([string(credentialsId: 'personal-access-token-github', variable: 'TOKEN')]) {
+                        def gitPushCommand = "git push --set-upstream https://$TOKEN@github.com/miriamcbl/playapp-fnt.git main"
+                        def pushResult = sh(script: gitPushCommand, returnStatus: true)
+                        if (pushResult == 0) {
+                            echo "Push successful"
+                        } else {
+                            error "Failed to push changes"
+                        }
+                    }
+                    // Crear tag con la versión
+                    sh "git tag -a ${version} -m 'Versión ${version}'"
+                    def gitPushCommand = 'git push --tags'
+                    def pushResult = sh(script: gitPushCommand, returnStatus: true)
+                    if (pushResult == 0) {
+                            echo "Push successful"
+                    } else {
+                            error "Failed to push changes"
+                    }
+                }
+            }
+        }      		
         stage('Build Docker Image') {
             steps {
                 script {
