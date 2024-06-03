@@ -21,8 +21,12 @@ jobs:
           node-version: '20'
       - name: Install dependencies
         run: npm install
+      - name: Install Chrome dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libnss3 xvfb
       - name: Run tests
-        run: npm run test -- --code-coverage --watch=false
+        run: xvfb-run --auto-servernum --server-args='-screen 0 1024x768x24' npm run test -- --no-watch --code-coverage
       - name: Upload coverage report
         uses: actions/upload-artifact@v3
         with:
