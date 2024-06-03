@@ -49,7 +49,7 @@ pipeline {
 		            writeFile file: propertiesDir, text: propertiesFile
         		}
         	}
-        }		
+        }        		
         stage('Build Docker Image') {
             steps {
                 script {
@@ -76,5 +76,40 @@ pipeline {
                 }
             }
         }
+        stage("Deploy") {
+            steps {
+                script {
+                    echo 'Deploying image to EC2 - Playapp'
+                    def dockerRunCmd = "docker run --name playapp_frontend -p 80:80 -d ${DOCKER_HUB_USERNAME}/${DOCKER_HUB_REPOSITORY}:${DOCKER_IMAGE_TAG}"
+                    def dockerLoginCmd = "docker login -u ${DOCKER_HUB_USERNAME} -p ${DOCKER_HUB_PASSWORD}"
+                    def dockerPullCmd = "docker pull docker.io/${DOCKER_HUB_USERNAME}/${DOCKER_HUB_REPOSITORY}:${DOCKER_IMAGE_TAG}"
+                    def dockerStopCmd = "docker stop playapp_frontend"
+                    def dockerRmvCmd = "docker rm playapp_frontend"
+                    // conexion ssh al server playapp
+                    sshagent(['ssh-keys-rsa']) {
+                    	echo "Conectados a server playapp"
+                        // Inicia sesión en Docker Hub
+                        sh "ssh -o StrictHostKeyChecking=no ${PLAYAPP_EC2} '${dockerLoginCmd}'"
+                        // Baja los últimos cambios subidos
+                        sh "ssh -o StrictHostKeyChecking=no ${PLAYAPP_EC2} '${dockerPullCmd}'"
+                        // Verificar si el contenedor está en ejecución antes de detenerlo
+                        def checkContainerRunningCmd = "docker ps --filter name=playapp_frontend --format {{.Names}}"
+                        def checkContainerCreatedCmd = "docker ps -a --filter name=playapp_frontend --format {{.Names}}"   
+                        def checkExistsContainerRunning = sh(script: "ssh -o StrictHostKeyChecking=no ${PLAYAPP_EC2} '${checkContainerRunningCmd}'", returnStdout: true).trim()
+                        def checkExistsContainerCreated = sh(script: "ssh -o StrictHostKeyChecking=no ${PLAYAPP_EC2} '${checkContainerCreatedCmd}'", returnStdout: true).trim()
+                        if (checkExistsContainerRunning == 'playapp_frontend') {
+                            echo "Existe contenedor activo, se procede parar"
+                            sh "ssh -o StrictHostKeyChecking=no ${PLAYAPP_EC2} '${dockerStopCmd}'"
+                        }
+                        if (checkExistsContainerCreated == 'playapp_frontend'){
+                        	echo "Existe contenedor creado, se elimina"
+                            sh "ssh -o StrictHostKeyChecking=no ${PLAYAPP_EC2} '${dockerRmvCmd}'"
+                        }
+                        sh "ssh -o StrictHostKeyChecking=no ${PLAYAPP_EC2} '${dockerRunCmd}'"
+                    }
+                }
+            }
+        }
+
     }
 }
