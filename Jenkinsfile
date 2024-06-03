@@ -6,15 +6,13 @@ pipeline {
         string(name: 'VERSION', defaultValue: '1.0.0', description: 'Introduzca la versión')
     }    
     environment{
-    	  // Declaracion de variables de entorno
-        //SONAR_TOKEN = credentials('sonarcloud-token')
+    	// Declaracion de variables de entorno
         DOCKER_HUB_USERNAME = credentials('docker-hub-username')
         DOCKER_HUB_PASSWORD = credentials('docker-hub-token')
         DOCKER_HUB_REPOSITORY = 'playapp_fnt'
         DOCKER_IMAGE_TAG = 'latest'
         PLAYAPP_EC2_FNT = credentials('playapp_ec2_fnt')
-        //OPENAI_API_KEY = credentials('openai-api-key')
-        //ACCUWEATHER_API_KEY = credentials('accuweather-api-key')        
+        PLAYAPP_EC2 = credentials('playapp_ec2')      
     }
 
     stages {
