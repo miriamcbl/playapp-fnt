@@ -4,19 +4,15 @@
 <main class="main">
   <div class="chat-container">
     <div class="chat-box">
-        <div class="message received">
-          <span class="material-icons">support_agent</span> Hola, ¿qué quieres saber?
-        </div>
-        <div class="message sent">
-          <span class="material-icons">face</span>¡Hola!
-        </div>
+      <div *ngFor="let message of messages" [class.received]="message.received" [class.sent]="!message.received" class="message">
+        <span class="material-icons">{{ message.icon }}</span> {{ message.text }}
+      </div>
     </div>
   </div>
 </main>
 <div class="input-box">
-    <input type="text" placeholder="Escribe tu mensaje...">
-    <button class="rounded-circle">
-      <span class="material-icons">send</span>
-    </button>
-
+  <input type="text" [(ngModel)]="newMessageText" name="newMessageText" placeholder="Escribe tu mensaje..." />
+  <button class="rounded-circle" (click)="sendMessage()">
+    <span class="material-icons">send</span>
+  </button>
 </div>
