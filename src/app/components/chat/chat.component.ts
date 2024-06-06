@@ -1,9 +1,13 @@
+import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
+import { FormsModule} from '@angular/forms';
 
 @Component({
   selector: 'app-chat',
   templateUrl: './chat.component.html',
-  styleUrls: ['./chat.component.css']
+  styleUrls: ['./chat.component.css'],
+  standalone: true,
+  imports: [CommonModule, FormsModule]
 })
 export class ChatComponent {
   messages: { text: string, received: boolean, icon: string }[] = [
@@ -13,11 +17,12 @@ export class ChatComponent {
   newMessageText: string = '';
   sendMessage() {
     if (this.newMessageText.trim()) {
-      // Agregar el mensaje enviado por el usuario
+      console.log(this.newMessageText);
+      // mensaje del usuario
       this.messages.push({ text: this.newMessageText, received: false, icon: 'face' });
       this.newMessageText = '';
   
-      // Simulación de respuesta automática del chat
+      // respuesta automatica del chat
       setTimeout(() => {
         this.messages.push({ text: 'Estamos trabajando...', received: true, icon: 'support_agent' });
       }, 1000);
