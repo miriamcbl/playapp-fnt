@@ -10,7 +10,7 @@ export class PlayappapiService {
   
   constructor(private http: HttpClient) { }
 
-  getHolaMundo(): Observable<string>{
-    return this.http.get<string>(this.PLAYAPP_URL+'ai/holaMundo');
+  getHolaMundo(): Observable<any>{
+    return this.http.get(this.PLAYAPP_URL+'ai/holaMundo', { responseType: 'text' });
   }
 }

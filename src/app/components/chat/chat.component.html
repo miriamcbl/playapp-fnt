@@ -3,16 +3,16 @@
       
 <main class="main">
   <div class="chat-container">
-    <div class="chat-box">
-      <div *ngFor="let message of messages" [class.received]="message.received" [class.sent]="!message.received" class="message">
+    <div class="chat-box" #scrollMe>
+      <div *ngFor="let message of messages" [class.received]="message.received" [class.sent]="!message.received" [@messageAnimation] class="message">
         <span class="material-icons">{{ message.icon }}</span> {{ message.text }}
       </div>
     </div>
   </div>
 </main>
 <div class="input-box">
-  <input type="text" [(ngModel)]="newMessageText" id="newMessageText" name="newMessageText" placeholder="Escribe tu mensaje..." />
-  <button class="rounded-circle" (click)="sendMessage()">
+  <input type="text" [(ngModel)]="newMessageText" id="newMessageText" name="newMessageText" (keyup.enter)="getMessagesCommunication()" placeholder="Escribe tu mensaje..." />
+  <button class="rounded-circle" (click)="getMessagesCommunication()">
     <span class="material-icons">send</span>
   </button>
 </div>
