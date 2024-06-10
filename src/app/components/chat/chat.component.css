@@ -28,6 +28,7 @@
     font-family: 'Roboto', sans-serif; 
     display: flex;
     align-items: center;
+    overflow-y: auto;
 }
 
 .message .material-icons {
@@ -101,3 +102,34 @@
     justify-content: center;
     align-items: center;
 }
+
+.spinner {
+    display: flex;
+    align-items: center;
+  }
+  
+  .spinner .dot {
+    width: 8px;
+    height: 8px;
+    margin: 0 2px;
+    border-radius: 50%;
+    background-color: #2c2c2c;
+    animation: bounce 1.2s infinite ease-in-out;
+  }
+  
+  .spinner .dot:nth-child(1) {
+    animation-delay: -0.32s;
+  }
+  
+  .spinner .dot:nth-child(2) {
+    animation-delay: -0.16s;
+  }
+  
+  @keyframes bounce {
+    0%, 80%, 100% {
+      transform: scale(0);
+    }
+    40% {
+      transform: scale(1);
+    }
+  }

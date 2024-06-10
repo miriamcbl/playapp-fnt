@@ -11,6 +11,7 @@ import { trigger, transition, style, animate } from '@angular/animations';
   styleUrls: ['./chat.component.css'],
   standalone: true,
   imports: [CommonModule, FormsModule, HttpClientModule],
+  // Spinner
   animations: [
     trigger('messageAnimation', [
       transition(':enter', [
@@ -21,14 +22,17 @@ import { trigger, transition, style, animate } from '@angular/animations';
   ]
 })
 export class ChatComponent implements OnInit, AfterViewChecked{
-  messages: { text: string, received: boolean, icon: string }[] = [
+  messages: { text: string, received: boolean, icon: string, loading?: boolean }[] = [
     { text: 'Hola, ¿qué quieres saber?', received: true, icon: 'support_agent' }
   ];
   
   newMessageText: string = '';
 
+  loading: boolean = false;
+
   constructor(private playappService: PlayappapiService){}
 
+  // Módulo para que el chat siempre esté con el scroll abajo
   @ViewChild('scrollMe')
   private myScrollContainer!: ElementRef;
 
@@ -47,6 +51,7 @@ export class ChatComponent implements OnInit, AfterViewChecked{
   }
 
 
+  // Módulo comunicación
   getMessagesCommunication(){
     this.sendMessage();
     this.answerMessage();
@@ -64,23 +69,38 @@ export class ChatComponent implements OnInit, AfterViewChecked{
   }
 
   answerMessage(){
+    const loadingMessage = { text: '', received: true, icon: 'support_agent', loading: true };
+    this.messages.push(loadingMessage);
+    this.loading = true;
     // mensaje de la IA. Se llama a la API y luego se añade al vector de mensajes
     if (this.newMessageText.toLowerCase().includes('hola')) {
       console.log('en el if ' + this.newMessageText);
       this.playappService.getHolaMundo().subscribe(
         (response: any) => {            
-          this.messages.push({ text: response, received: true, icon: 'support_agent' });
+          this.replaceLoadingMessage(response);
+          this.loading = false;
         },
         (error) => {
           console.error('Error al obtener la respuesta de la API', error);
-          this.messages.push({ text: 'Error al obtener la respuesta de la API', received: true, icon: 'support_agent' });
+          this.replaceLoadingMessage('Error al obtener la respuesta de la API');
+          this.loading = false;
         }
       );
     } else {
       console.log('en el else ' + this.newMessageText);
       setTimeout(() => {
-        this.messages.push({ text: 'Estamos trabajando...', received: true, icon: 'support_agent' });
-      }, 1000);
+        this.replaceLoadingMessage('Estamos trabajando...');
+        this.loading = false;
+      }, 3000);
+    }
+  }
+
+  // Módulo Spinner  
+  replaceLoadingMessage(responseText: string) {
+    // Reemplazamos el spinner por el mensaje de respuesta
+    const loadingIndex = this.messages.findIndex(msg => msg.loading);
+    if (loadingIndex !== -1) {
+      this.messages[loadingIndex] = { text: responseText, received: true, icon: 'support_agent' };
     }
   }
 }

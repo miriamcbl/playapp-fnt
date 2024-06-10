@@ -5,7 +5,13 @@
   <div class="chat-container">
     <div class="chat-box" #scrollMe>
       <div *ngFor="let message of messages" [class.received]="message.received" [class.sent]="!message.received" [@messageAnimation] class="message">
-        <span class="material-icons">{{ message.icon }}</span> {{ message.text }}
+        <span class="material-icons">{{ message.icon }}</span>
+        <ng-container *ngIf="!message.loading">{{ message.text }}</ng-container>
+        <div *ngIf="message.loading" class="spinner">
+          <span class="dot"></span>
+          <span class="dot"></span>
+          <span class="dot"></span>
+        </div>
       </div>
     </div>
   </div>
