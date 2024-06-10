@@ -1,17 +1,23 @@
 header {
     position: relative;
     padding: 15px;
-    font-family: 'Roboto', sans-serif;
-  }
+    font-family: "Calibri", sans-serif;
+    font-optical-sizing: auto;
+    font-size: 16px;
+}
   
   .menu-button {
     background: none;
     border: none;
-    color: rgb(82, 80, 80);
-    font-size: 16px;
+    color: rgb(138, 136, 136);
+    font-size: 15px;
     cursor: pointer;
     display: flex;
     align-items: center;
+    font-family: "Montserrat", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 600;
+    font-style: normal;
   }
   
   .material-symbols-outlined {
@@ -37,7 +43,7 @@ header {
     visibility: hidden;
     transform: translateY(-10px);
     transition: opacity 0.3s ease, transform 0.3s ease;
-    border-radius: 30px;
+    border-radius: 15px;
   }
   
   .dropdown-menu.open {
@@ -60,7 +66,6 @@ header {
   
   .dropdown-menu li a:hover {
     background-color: #f0f0f0;
-    border-radius: 30px;
   }
   
   .material-symbols-outlined {

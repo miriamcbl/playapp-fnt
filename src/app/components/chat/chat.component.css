@@ -5,7 +5,7 @@
     padding: 20px;
     display: flex;
     flex-direction: column;
-    height: calc(100vh - 120px); /* Altura máxima del contenedor */
+    height: calc(100vh - 160px); /* Ajustar la altura del contenedor */
 }
 
 .chat-box {
@@ -26,6 +26,7 @@
     padding: 8px 12px;
     border-radius: 15px;
     font-family: 'Roboto', sans-serif; 
+    font-size: 17px;
     display: flex;
     align-items: center;
     overflow-y: auto;
@@ -49,8 +50,7 @@
 
 .message.sent {
     align-self: flex-end;
-    background-color: #d1e7ff;
-    font-family: 'Roboto', sans-serif;
+    background-color: #d1e7ff;    
 }
 
 .input-box {
@@ -65,7 +65,7 @@
     box-shadow: 0px -1px 10px rgba(0, 0, 0, 0.1);
     border-radius: 20px;
     display: flex;
-    align-items: center;  
+    align-items: center;
 }
 
 .input-box:focus {
@@ -74,6 +74,7 @@
 
 .input-box input {
     font-size: 17px;
+    font-family: 'Roboto', sans-serif;
     outline: none;
     border: hidden;
     padding: 10px;
@@ -132,4 +133,19 @@
     40% {
       transform: scale(1);
     }
+  }
+
+  @keyframes typing {
+    from {
+      width: 0;
+    }
+    to {
+      width: 100%;
+    }
+  }
+  
+  .typing-animation {
+    animation: typing 1s steps(40, end);
+    overflow: hidden;
+    white-space: nowrap;
   }

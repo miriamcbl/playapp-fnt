@@ -1,17 +1,26 @@
 import { Component, ElementRef, OnDestroy, Renderer2 } from '@angular/core';
+import { NavigationEnd, Router, RouterModule } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [],
+  imports: [RouterModule],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css'
 })
 export class HeaderComponent implements OnDestroy {
   isMenuOpen = false;
+  private routerSubscription: Subscription;
   private globalClickListener: (() => void) | undefined;
-
-  constructor(private renderer: Renderer2, private elRef: ElementRef) {}
+  
+  constructor(private renderer: Renderer2, private elRef: ElementRef, private router: Router) {
+    this.routerSubscription = this.router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
+        this.isMenuOpen = false;
+      }
+    });
+  }
 
   toggleMenu() {
     this.isMenuOpen = !this.isMenuOpen;
@@ -34,6 +43,9 @@ export class HeaderComponent implements OnDestroy {
   ngOnDestroy() {
     if (this.globalClickListener) {
       this.globalClickListener();
+    }
+    if (this.routerSubscription) {
+      this.routerSubscription.unsubscribe();
     }
   }
 }
