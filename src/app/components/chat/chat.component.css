@@ -55,7 +55,7 @@
 
 .input-box {
     position: fixed;
-    bottom: 20px; /* Ajusta la distancia desde la parte inferior */
+    bottom: 30px;
     left: 50%;
     transform: translateX(-50%);
     width: 90%;

@@ -75,15 +75,22 @@ export class ChatComponent implements OnInit, AfterViewChecked{
     // mensaje de la IA. Se llama a la API y luego se añade al vector de mensajes
     if (this.newMessageText.toLowerCase().includes('hola')) {
       console.log('en el if ' + this.newMessageText);
-      this.playappService.getHolaMundo().subscribe(
-        (response: any) => {            
-          this.replaceLoadingMessage(response);
-          this.loading = false;
-        },
-        (error) => {
-          console.error('Error al obtener la respuesta de la API', error);
-          this.replaceLoadingMessage('Error al obtener la respuesta de la API');
-          this.loading = false;
+      this.playappService.getHolaMundo().subscribe({
+          // Next se usa cada vez que se devuelve un valor. Maneja respuesta de la API
+          next: (response: any) => {            
+            this.replaceLoadingMessage(response);
+            this.loading = false;
+          },
+          // Si el Observable encuentra error pasa por aquí
+          error: (error) => {
+            console.error('Error al obtener la respuesta de la API', error);
+            this.replaceLoadingMessage('Error al obtener la respuesta de la API');
+            this.loading = false;
+          },
+          // Cuando termina el Observable
+          complete: () => {
+            console.log('fin - observable - api');
+          }
         }
       );
     } else {
