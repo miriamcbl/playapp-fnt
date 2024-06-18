@@ -1,0 +1,24 @@
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet">
+      
+<main class="main">
+  <div class="chat-container">
+    <div class="chat-box" #scrollMe>
+      <div *ngFor="let message of messages" [class.received]="message.received" [class.sent]="!message.received" [@messageAnimation] class="message">
+        <span class="material-icons">{{ message.icon }}</span>
+        <ng-container *ngIf="!message.loading">{{ message.text }}</ng-container>
+        <div *ngIf="message.loading" class="spinner">
+          <span class="dot"></span>
+          <span class="dot"></span>
+          <span class="dot"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+<div class="input-box">
+  <input type="text" [(ngModel)]="newMessageText" id="newMessageText" name="newMessageText" (keyup.enter)="getMessagesCommunication()" placeholder="Escribe tu mensaje..." />
+  <button class="rounded-circle" (click)="getMessagesCommunication()">
+    <span class="material-icons">send</span>
+  </button>
+</div>

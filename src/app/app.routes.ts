@@ -1,10 +1,12 @@
 import { RouterModule, Routes } from '@angular/router';
-import { ChatComponent } from './componentes/chat/chat.component';
+import { ChatComponent } from './components/chat/chat.component';
 import { NgModule } from '@angular/core';
+import { AboutComponent } from './components/about/about.component';
 
 export const routes: Routes = [
     {path: '', redirectTo:'chat', pathMatch:'full'},
-    {path:'chat', component:ChatComponent}
+    {path:'chat', component:ChatComponent},
+    {path: 'about', component:AboutComponent}
 ];
 
 @NgModule({
