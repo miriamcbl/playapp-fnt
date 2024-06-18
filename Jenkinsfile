@@ -91,7 +91,14 @@ pipeline {
                     def propertiesFile2 = readFile(propertiesDir2)
                     def url_bck = "${PLAYAPP_EC2_FNT}"
                     propertiesFile2 = propertiesFile2.replaceAll('localhost', url_bck)
-                    writeFile file: propertiesDir2, text: propertiesFile2	
+                    writeFile file: propertiesDir2, text: propertiesFile2
+
+                    //Procesar nginx.conf
+                    def propertiesDir3 = "${WORKSPACE}/nginx.conf"
+                    sh "chmod g+w ${propertiesDir3}"
+                    def propertiesFile3 = readFile(propertiesDir3)
+                    propertiesFile3 = propertiesFile3.replaceAll('localhost', url_bck)
+                    writeFile file: propertiesDir3, text: propertiesFile3	
         		}
         	}
         }      		
