@@ -31,33 +31,6 @@ pipeline {
                 }
             }
         }
-        stage('Security properties'){
-        	steps {
-        		script {
-        			echo 'Injecting the sensitive properties'		
-		            def propertiesDir = "${WORKSPACE}/package.json"
-					sh "chmod g+w ${propertiesDir}"
-		            // Se lee el properties
-		            def propertiesFile = readFile(propertiesDir)
-                    def hostserver = "ng serve --host ${PLAYAPP_EC2_FNT} --port 8080"
-                    echo hostserver
-		            // Se actualiza con las secrets 
-		            propertiesFile = propertiesFile.replaceAll('ng serve', hostserver)		
-		            // se escribe todo
-		            writeFile file: propertiesDir, text: propertiesFile
-
-                    def propertiesDir2 = "${WORKSPACE}/src/app/services/playappapi.service.ts"
-                    sh "chmod g+w ${propertiesDir2}"
-                    def propertiesFile2 = readFile(propertiesDir2)
-                    def url_bck = "http://${PLAYAPP_EC2_FNT}:8080/"
-                    echo ip
-		            // Se actualiza con las secrets 
-		            propertiesFile2 = propertiesFile2.replaceAll('http://localhost:8080/', url_bck)
-                    // se escribe todo
-		            writeFile file2: propertiesDir2, text: propertiesFile2		
-        		}
-        	}
-        }
         stage('Publish Version') {
             steps {
                 script {                
@@ -94,6 +67,33 @@ pipeline {
                     }
                 }
             }
+        }        
+        stage('Security properties'){
+        	steps {
+        		script {
+        			echo 'Injecting the sensitive properties'		
+		            def propertiesDir = "${WORKSPACE}/package.json"
+					sh "chmod g+w ${propertiesDir}"
+		            // Se lee el properties
+		            def propertiesFile = readFile(propertiesDir)
+                    def hostserver = "ng serve --host ${PLAYAPP_EC2_FNT} --port 8080"
+                    echo hostserver
+		            // Se actualiza con las secrets 
+		            propertiesFile = propertiesFile.replaceAll('ng serve', hostserver)		
+		            // se escribe todo
+		            writeFile file: propertiesDir, text: propertiesFile
+
+                    def propertiesDir2 = "${WORKSPACE}/src/app/services/playappapi.service.ts"
+                    sh "chmod g+w ${propertiesDir2}"
+                    def propertiesFile2 = readFile(propertiesDir2)
+                    def url_bck = "http://${PLAYAPP_EC2_FNT}:8080/"
+                    echo ip
+		            // Se actualiza con las secrets 
+		            propertiesFile2 = propertiesFile2.replaceAll('http://localhost:8080/', url_bck)
+                    // se escribe todo
+		            writeFile file2: propertiesDir2, text: propertiesFile2		
+        		}
+        	}
         }      		
         stage('Build Docker Image') {
             steps {
