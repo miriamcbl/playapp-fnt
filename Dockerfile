@@ -25,4 +25,6 @@ COPY --from=build /app/dist/playapp-fnt /usr/share/nginx/html
 # Modifying the nginx default config to our config to point to our index.html
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
+RUN service nginx restart
+
 EXPOSE 80
