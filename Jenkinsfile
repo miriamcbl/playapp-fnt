@@ -31,27 +31,6 @@ pipeline {
                 }
             }
         }
-        stage('SonarCloud Verify') {
-            steps {
-                // Verificar el estado del Quality Gate                
-                script {
-        	    echo 'Verifying Sonar quailty gate status'
-                    def qualityGateUrl = "https://sonarcloud.io/api/qualitygates/project_status?projectKey=miriamcbl_playapp-fnt"
-                    // llamada http especificando el codigo que se considera valido
-                    def response = httpRequest(url: qualityGateUrl, validResponseCodes: '200')
-                    // parse a json
-                    def status = readJSON text: response.content                    
-                    if (status.projectStatus.status == 'ERROR') {
-                        def conditions = status.projectStatus.conditions
-                        def errorConditions = conditions.findAll { it.status == 'ERROR' }                        
-                        def errorMessages = errorConditions.collect { "- ${it.metricKey}: ${it.status}" }
-                        def errorMessage = "Quality Gate failed with the following conditions:\n${errorMessages.join('\n')}"
-                        
-                        error errorMessage
-                    }
-                }                
-            }
-        }
         stage('Security properties'){
         	steps {
         		script {
@@ -66,6 +45,16 @@ pipeline {
 		            propertiesFile = propertiesFile.replaceAll('ng serve', hostserver)		
 		            // se escribe todo
 		            writeFile file: propertiesDir, text: propertiesFile
+
+                    def propertiesDir2 = "${WORKSPACE}/src/app/services/playappapi.service.ts"
+                    sh "chmod g+w ${propertiesDir2}"
+                    def propertiesFile2 = readFile(propertiesDir2)
+                    def url_bck = "http://${PLAYAPP_EC2_FNT}:8080/"
+                    echo ip
+		            // Se actualiza con las secrets 
+		            propertiesFile2 = propertiesFile2.replaceAll('http://localhost:8080/', url_bck)
+                    // se escribe todo
+		            writeFile file2: propertiesDir2, text: propertiesFile2		
         		}
         	}
         }

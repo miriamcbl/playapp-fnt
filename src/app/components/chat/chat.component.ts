@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { AfterViewChecked, AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormsModule} from '@angular/forms';
-import { PlayappapiService } from '../../services/playappapi.service';
+import { MessageResponse, PlayappapiService } from '../../services/playappapi.service';
 import { HttpClientModule } from '@angular/common/http';
 import { trigger, transition, style, animate } from '@angular/animations';
 
@@ -54,7 +54,7 @@ export class ChatComponent implements OnInit, AfterViewChecked{
   // Módulo comunicación
   getMessagesCommunication(){
     this.sendMessage();
-    this.answerMessage();
+    this.answerMessage(this.newMessageText);
     //reestablecemos el input, 
     //para que no se quede guardado el último mensaje ahí
     this.newMessageText = '';
@@ -68,38 +68,30 @@ export class ChatComponent implements OnInit, AfterViewChecked{
     }
   }
 
-  answerMessage(){
+  answerMessage(message: string){
+    // Aquí creamos un objeto que cumpla con la interfaz MessageResponse
+    const messageResponseObject: MessageResponse = { message: message };
     const loadingMessage = { text: '', received: true, icon: 'support_agent', loading: true };
     this.messages.push(loadingMessage);
     this.loading = true;
     // mensaje de la IA. Se llama a la API y luego se añade al vector de mensajes
-    if (this.newMessageText.toLowerCase().includes('hola')) {
-      console.log('en el if ' + this.newMessageText);
-      this.playappService.getHolaMundo().subscribe({
-          // Next se usa cada vez que se devuelve un valor. Maneja respuesta de la API
-          next: (response: any) => {            
-            this.replaceLoadingMessage(response);
-            this.loading = false;
-          },
-          // Si el Observable encuentra error pasa por aquí
-          error: (error) => {
-            console.error('Error al obtener la respuesta de la API', error);
-            this.replaceLoadingMessage('Error al obtener la respuesta de la API');
-            this.loading = false;
-          },
-          // Cuando termina el Observable
-          complete: () => {
-            console.log('fin - observable - api');
-          }
-        }
-      );
-    } else {
-      console.log('en el else ' + this.newMessageText);
-      setTimeout(() => {
-        this.replaceLoadingMessage('Estamos trabajando...');
+    this.playappService.getResponse(messageResponseObject).subscribe({
+      // Next se usa cada vez que se devuelve un valor. Maneja respuesta de la API
+      next: (response: any) => {            
+        this.replaceLoadingMessage(response.message);
         this.loading = false;
-      }, 3000);
-    }
+      },
+      // Si el Observable encuentra error pasa por aquí
+      error: (error) => {
+        console.error('Error al obtener la respuesta de la API', error);
+        this.replaceLoadingMessage('¡Vaya! Parece que estamos teniendo problemas con los ayudantes chorlitejos, inténtelo más tarde');
+        this.loading = false;
+      },
+      // Cuando termina el Observable
+      complete: () => {
+         console.log('fin - observable - api');
+      }
+    });
   }
 
   // Módulo Spinner  
