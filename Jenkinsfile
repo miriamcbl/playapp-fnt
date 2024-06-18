@@ -71,7 +71,9 @@ pipeline {
         stage('Security properties'){
         	steps {
         		script {
-        			echo 'Injecting the sensitive properties'		
+        			echo 'Injecting the sensitive properties'
+                    
+                    // Procesar package.json		
 		            def propertiesDir = "${WORKSPACE}/package.json"
 					sh "chmod g+w ${propertiesDir}"
 		            // Se lee el properties
@@ -83,14 +85,13 @@ pipeline {
 		            // se escribe todo
 		            writeFile file: propertiesDir, text: propertiesFile
 
+                    // Procesar playappapi.service.ts
                     def propertiesDir2 = "${WORKSPACE}/src/app/services/playappapi.service.ts"
                     sh "chmod g+w ${propertiesDir2}"
                     def propertiesFile2 = readFile(propertiesDir2)
                     def url_bck = "${PLAYAPP_EC2_FNT}"
-		            // Se actualiza con las secrets 
-		            propertiesFile2 = propertiesFile2.replaceAll('localhost', url_bck)
-                    // se escribe todo
-		            writeFile file2: propertiesDir2, text: propertiesFile2		
+                    propertiesFile2 = propertiesFile2.replaceAll('localhost', url_bck)
+                    writeFile file: propertiesDir2, text: propertiesFile2	
         		}
         	}
         }      		
