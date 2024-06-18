@@ -86,10 +86,10 @@ pipeline {
                     def propertiesDir2 = "${WORKSPACE}/src/app/services/playappapi.service.ts"
                     sh "chmod g+w ${propertiesDir2}"
                     def propertiesFile2 = readFile(propertiesDir2)
-                    def url_bck = "http://${PLAYAPP_EC2_FNT}:8080/"
+                    def url_bck = "'http://${PLAYAPP_EC2_FNT}:8080/'"
                     echo url_bck
 		            // Se actualiza con las secrets 
-		            propertiesFile2 = propertiesFile2.replaceAll('http://localhost:8080/', url_bck)
+		            propertiesFile2 = propertiesFile2.replaceAll("'http://localhost:8080/'", url_bck)
                     // se escribe todo
 		            writeFile file2: propertiesDir2, text: propertiesFile2		
         		}
