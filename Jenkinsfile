@@ -98,8 +98,9 @@ pipeline {
                     sh "chmod g+w ${propertiesDir3}"
                     def propertiesFile3 = readFile(propertiesDir3)
                     def url_bck_proxy = "proxy_pass http://${PLAYAPP_EC2_FNT}:8080"
+                    def url_bck_cors = "http://${PLAYAPP_EC2_FNT}"
                     propertiesFile3 = propertiesFile3.replaceAll('proxy_pass localhost', url_bck_proxy)
-                    propertiesFile3 = propertiesFile3.replaceAll('localhost', url_bck)
+                    propertiesFile3 = propertiesFile3.replaceAll('localhost', url_bck_cors)
                     writeFile file: propertiesDir3, text: propertiesFile3	
         		}
         	}
