@@ -22,9 +22,7 @@ import { trigger, transition, style, animate } from '@angular/animations';
   ]
 })
 export class ChatComponent implements OnInit, AfterViewChecked{
-  messages: { text: string, received: boolean, icon: string, loading?: boolean }[] = [
-    { text: 'Hola, ¿qué quieres saber?', received: true, icon: 'support_agent' }
-  ];
+  messages: { text: string, received: boolean, icon: string, loading?: boolean }[] = [];
   
   newMessageText: string = '';
 
@@ -38,6 +36,7 @@ export class ChatComponent implements OnInit, AfterViewChecked{
 
   ngOnInit() { 
     this.scrollToBottom();
+    this.answerMessage("Hola")
   }
 
   ngAfterViewChecked() {        
