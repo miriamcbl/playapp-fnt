@@ -14,7 +14,6 @@
     padding: 10px;
     margin-bottom: 20px;
     overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
     flex: 1; /* La caja de chat ocupa el espacio restante */
 }
 
@@ -153,6 +152,6 @@
 
   @media (max-width: 768px) {
     .chat-container {
-        height: calc(100vh - 140px); /* Ajustar la altura del contenedor para dispositivos móviles */
+        height: calc(100dvh - 140px); /* Ajustar la altura del contenedor para dispositivos móviles */
     }
 }
