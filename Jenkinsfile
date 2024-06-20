@@ -31,6 +31,27 @@ pipeline {
                 }
             }
         }
+        stage('SonarCloud Verify') {
+            steps {
+                // Verificar el estado del Quality Gate                
+                script {
+        	    echo 'Verifying Sonar quailty gate status'
+                    def qualityGateUrl = "https://sonarcloud.io/api/qualitygates/project_status?projectKey=miriamcbl_playapp-fnt"
+                    // llamada http especificando el codigo que se considera valido
+                    def response = httpRequest(url: qualityGateUrl, validResponseCodes: '200')
+                    // parse a json
+                    def status = readJSON text: response.content                    
+                    if (status.projectStatus.status == 'ERROR') {
+                        def conditions = status.projectStatus.conditions
+                        def errorConditions = conditions.findAll { it.status == 'ERROR' }                        
+                        def errorMessages = errorConditions.collect { "- ${it.metricKey}: ${it.status}" }
+                        def errorMessage = "Quality Gate failed with the following conditions:\n${errorMessages.join('\n')}"
+                        
+                        error errorMessage
+                    }
+                }                
+            }
+        }
         stage('Publish Version') {
             steps {
                 script {                
