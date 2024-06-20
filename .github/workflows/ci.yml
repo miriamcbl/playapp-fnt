@@ -39,4 +39,4 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         with:
           args: >
-            -Dsonar.javascript.lcov.reportPaths=coverage/playapp-fnt/index.html
+            -Dsonar.javascript.lcov.reportPaths=coverage/playapp-fnt/lcov.info
