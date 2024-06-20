@@ -31,11 +31,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: coverage-report
-          path: coverage
-      - name: Adjust lcov.info for SonarCloud
-        run: |
-          find . -name "lcov.info"
-          sed -i 's@'"$GITHUB_WORKSPACE"'@/github/workspace/@g' $(find . -name "lcov.info")
+          path: coverage-report
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master
         env:
@@ -43,4 +39,4 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         with:
           args: >
-            -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
+            -Dsonar.javascript.lcov.reportPaths=coverage-report/lcov.info
