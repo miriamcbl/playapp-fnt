@@ -18,10 +18,12 @@ module.exports = function (config) {
         reporters: [
           { type: 'html' },
           { type: 'text-summary' },
-          { type: 'lcov' }
+          { type: 'lcov',
+            dir: 'coverage/playapp-fnt/',
+            file: 'lcov.info'}
         ]
       },
-      reporters: ['progress', 'kjhtml'],
+      reporters: ['progress', 'kjhtml', 'lcov'],
       port: 9876,
       colors: true,
       logLevel: config.LOG_INFO,
