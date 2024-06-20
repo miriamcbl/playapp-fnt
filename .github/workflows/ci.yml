@@ -33,7 +33,9 @@ jobs:
           name: coverage-report
           path: coverage
       - name: Adjust lcov.info for SonarCloud
-        run: sed -i 's@'"$GITHUB_WORKSPACE"'@/github/workspace/@g' coverage/lcov.info
+        run: |
+          find . -name "lcov.info"
+          sed -i 's@'"$GITHUB_WORKSPACE"'@/github/workspace/@g' $(find . -name "lcov.info")
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master
         env:
