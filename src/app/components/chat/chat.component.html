@@ -1,11 +1,10 @@
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
-      rel="stylesheet">
-      
+      rel="stylesheet">      
 <main class="main">
   <div class="chat-container">
     <div class="chat-box" #scrollMe>
       <div *ngFor="let message of messages" [class.received]="message.received" [class.sent]="!message.received" [@messageAnimation] class="message">
-        <span class="material-icons">{{ message.icon }}</span>
+        <img [src]="message.icon" alt="icon" class="custom-icon">
         <ng-container *ngIf="!message.loading">{{ message.text }}</ng-container>
         <div *ngIf="message.loading" class="spinner">
           <span class="dot"></span>
