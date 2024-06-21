@@ -88,7 +88,6 @@ export class ChatComponent implements OnInit, AfterViewChecked{
       },
       // Cuando termina el Observable
       complete: () => {
-         console.log('fin - observable - api');
       }
     });
   }
