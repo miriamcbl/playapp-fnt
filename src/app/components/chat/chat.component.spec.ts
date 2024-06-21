@@ -39,7 +39,7 @@ describe('ChatComponent', () => {
 
   it('should handle error from playappService.getResponse', () => {
     const errorMessage = '¡Vaya! Parece que estamos teniendo problemas con los ayudantes chorlitejos, inténtelo más tarde';
-    const loadingMessage = { text: '', received: true, icon: 'support_agent', loading: true };
+    const loadingMessage = { text: '', received: true, icon: 'assets/chorli.png', loading: true };
     component.answerMessage('error');
     expect(component.messages).toContain(jasmine.objectContaining(loadingMessage));
     expect(component.messages.some(msg => msg.text === errorMessage)).toBe(true);
@@ -48,7 +48,7 @@ describe('ChatComponent', () => {
 
   it('should replace loading message with response message', () => {
     const responseMessage = 'Simulated response';
-    const loadingMessage = { text: '', received: true, icon: 'support_agent', loading: true };
+    const loadingMessage = { text: '', received: true, icon: 'assets/chorli.png', loading: true };
     component.answerMessage('test message');
     expect(component.messages).toContain(jasmine.objectContaining(loadingMessage));
     expect(component.messages.some(msg => msg.text === responseMessage)).toBe(true);
