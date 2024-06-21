@@ -63,14 +63,14 @@ export class ChatComponent implements OnInit, AfterViewChecked{
     // mensaje del usuario. Se añaden al vector 
     // de mensajes de manera indefinida (bucle for del html)
     if (this.newMessageText.trim()) {
-      this.messages.push({ text: this.newMessageText, received: false, icon: 'face' });
+      this.messages.push({ text: this.newMessageText, received: false, icon: 'assets/face.png' });
     }
   }
 
   answerMessage(message: string){
     // Aquí creamos un objeto que cumpla con la interfaz MessageResponse
     const messageResponseObject: MessageResponse = { message: message };
-    const loadingMessage = { text: '', received: true, icon: 'support_agent', loading: true };
+    const loadingMessage = { text: '', received: true, icon: 'assets/chorli.png', loading: true };
     this.messages.push(loadingMessage);
     this.loading = true;
     // mensaje de la IA. Se llama a la API y luego se añade al vector de mensajes
@@ -88,7 +88,6 @@ export class ChatComponent implements OnInit, AfterViewChecked{
       },
       // Cuando termina el Observable
       complete: () => {
-         console.log('fin - observable - api');
       }
     });
   }
@@ -98,7 +97,7 @@ export class ChatComponent implements OnInit, AfterViewChecked{
     // Reemplazamos el spinner por el mensaje de respuesta
     const loadingIndex = this.messages.findIndex(msg => msg.loading);
     if (loadingIndex !== -1) {
-      this.messages[loadingIndex] = { text: responseText, received: true, icon: 'support_agent' };
+      this.messages[loadingIndex] = { text: responseText, received: true, icon: 'assets/chorli.png' };
     }
   }
 }
