@@ -16,6 +16,6 @@ export class PlayappapiService {
 
   getResponse(message: MessageResponse):Observable<any>{
     let params = new HttpParams().set('message', message.message);
-    return this.http.get(this.PLAYAPP_URL+'v1/chat/getBeachesRecommended', {params: params});
+    return this.http.get(this.PLAYAPP_URL+'v1/chat/getBeachesRecommended', {params: params, withCredentials: true});
   }
 }
